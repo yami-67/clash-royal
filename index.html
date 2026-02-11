@@ -5,36 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clash Royale Game</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        #game { margin: 20px auto; width: 80%; }
-        .card { width: 100px; height: 140px; border: 1px solid #ccc; display: inline-block; margin: 10px; position: relative; }
-        .card img { width: 100%; height: 100%; }
-        .attack, .defense { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        #lobby { display: none; }
+        #game { display: none; }
+        .hidden { display: none; }
+        .troop { width: 50px; height: 50px; position: absolute; }
     </style>
+    <script>
+        let playerTroops = [];
+        let enemyTroops = [];
+        let towerHealth = { player: 1000, enemy: 1000 };
+        let gameInterval;
+
+        function startLobby() {
+            document.getElementById('lobby').classList.remove('hidden');
+        }
+
+        function startGame() {
+            document.getElementById('lobby').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            initiateGame();
+        }
+
+        function initiateGame() {
+            // Spawn troops
+            spawnTroops();
+            gameInterval = setInterval(updateGame, 1000);
+        }
+
+        function spawnTroops() {
+            const troop = document.createElement('div');
+            troop.className = 'troop';
+            troop.style.left = '0px';
+            troop.style.top = Math.floor(Math.random() * 500) + 'px';
+            document.getElementById('game').appendChild(troop);
+            playerTroops.push(troop);
+            // Randomly determine enemy troop
+            setTimeout(spawnEnemyTroop, 2000);
+        }
+
+        function spawnEnemyTroop() {
+            const troop = document.createElement('div');
+            troop.className = 'troop';
+            troop.style.left = '950px';
+            troop.style.top = Math.floor(Math.random() * 500) + 'px';
+            document.getElementById('game').appendChild(troop);
+            enemyTroops.push(troop);
+        }
+
+        function updateGame() {
+            playerTroops.forEach(troop => {
+                let pos = parseInt(troop.style.left);
+                troop.style.left = pos + 5 + 'px';
+                if (pos >= 900) { fight(troop); }
+            });
+            enemyTroops.forEach(troop => {
+                let pos = parseInt(troop.style.left);
+                troop.style.left = pos - 5 + 'px';
+                if (pos <= 50) { fight(troop); }
+            });
+        }
+
+        function fight(troop) {
+            // Simplified fight logic
+            const opponentTroop = troop.className === 'troop' ? enemyTroops.pop() : playerTroops.pop();
+            if (opponentTroop) {
+                alert('A fight occurred!');
+                opponentTroop.remove();
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Clash Royale</h1>
-    <div id="game">
-        <h2>Your Cards</h2>
-        <div id="playerCards"></div>
+    <div id="lobby">
+        <h1>Welcome to Clash Royale!</h1>
+        <button onclick="startGame()">Start Match</button>
     </div>
-    <script>
-        const playerCards = [
-            { name: 'Knight', image: 'knight.png', attack: 5, defense: 8 },
-            { name: 'Giant', image: 'giant.png', attack: 10, defense: 14 },
-            { name: 'Archer', image: 'archer.png', attack: 4, defense: 3 }
-        ];
-
-        const playerCardsDiv = document.getElementById('playerCards');
-
-        playerCards.forEach(card => {
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'card';
-            cardDiv.innerHTML = `<img src="${card.image}" alt="${card.name}">
-                <div class="attack">Attack: ${card.attack}</div>
-                <div class="defense">Defense: ${card.defense}</div>`;
-            playerCardsDiv.appendChild(cardDiv);
-        });
-    </script>
+    <div id="game">
+        <h2>Game in Progress...</h2>
+    </div>
+    <script>startLobby();</script>
 </body>
 </html>
