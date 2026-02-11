@@ -3,79 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clash Royale Style Game</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        #battle-area { display: flex; justify-content: space-between; }
-        .lane { width: 30%; height: 400px; border: 1px solid #ccc; position: relative; }
-        .troop { width: 40px; height: 40px; position: absolute; }
-        .tower { width: 50px; height: 50px; position: absolute; background: red; }
-        #lobby { margin-bottom: 20px; }
-        #chest { margin-top: 20px; }
-    </style>
+    <title>Clash Royale Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="lobby">
-        <h1>Clash Royale Style Game</h1>
-        <button id="start-button">Start Battle!</button>
-        <div id="chest"></div>
+    <div id="lobby-screen">
+        <h1>Welcome to Clash Royale</h1>
+        <button id="start-game">Start Game</button>
     </div>
-    <div id="battle-area">
-        <div class="lane" id="lane1"></div>
-        <div class="lane" id="lane2"></div>
-        <div class="lane" id="lane3"></div>
+    <div id="game-screen" style="display: none;">
+        <div id="map">
+            <div class="lane" id="lane-1"></div>
+            <div class="lane" id="lane-2"></div>
+            <div class="lane" id="lane-3"></div>
+        </div>
+        <div id="elixir-bar">
+            <p>Elixir: <span id="elixir-count">10</span></p>
+        </div>
+        <div id="troop-deployment">
+            <button class="troop" data-cost="3">Troop A</button>
+            <button class="troop" data-cost="5">Troop B</button>
+            <button class="troop" data-cost="7">Troop C</button>
+        </div>
+        <div id="combat-area">
+            <h2>Battle!</h2>
+            <div id="your-troops"></div>
+            <div id="enemy-troops"></div>
+        </div>
     </div>
-    <script>
-        // Game Variables
-        let elixir = 10;
-        let playerTowerHealth = 100;
-        let enemyTowerHealth = 100; 
-        const lanes = document.querySelectorAll('.lane');
-
-        // Start Battle Function
-        document.getElementById('start-button').addEventListener('click', startBattle);
-
-        function startBattle() {
-            deployTroop();
-        }
-
-        function deployTroop() {
-            if (elixir >= 5) {
-                elixir -= 5;
-                const troop = document.createElement('div');
-                troop.classList.add('troop');
-                troop.style.backgroundColor = 'blue'; // Player troop
-                troop.style.left = '0';
-                troop.style.top = '100px';
-                lanes[0].appendChild(troop);
-                moveTroop(troop);
-            }
-        }
-
-        function moveTroop(troop) {
-            let position = 0;
-            const interval = setInterval(() => {
-                if (position >= 600) { // Move to enemy tower
-                    clearInterval(interval);
-                    combat(troop);
-                }
-                position += 2;
-                troop.style.left = position + 'px';
-            }, 50);
-        }
-
-        function combat(troop) {
-            enemyTowerHealth -= 10;
-            alert('Troop is attacking the tower!');
-            if (enemyTowerHealth <= 0) {
-                alert('You win!');
-                generateChest();
-            }
-        }
-
-        function generateChest() {
-            document.getElementById('chest').innerHTML = '<p>You found a chest with rewards!</p>';
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
