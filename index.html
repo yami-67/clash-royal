@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash Royale Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #game { margin: 20px auto; width: 80%; }
+        .card { width: 100px; height: 140px; border: 1px solid #ccc; display: inline-block; margin: 10px; position: relative; }
+        .card img { width: 100%; height: 100%; }
+        .attack, .defense { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+    </style>
+</head>
+<body>
+    <h1>Clash Royale</h1>
+    <div id="game">
+        <h2>Your Cards</h2>
+        <div id="playerCards"></div>
+    </div>
+    <script>
+        const playerCards = [
+            { name: 'Knight', image: 'knight.png', attack: 5, defense: 8 },
+            { name: 'Giant', image: 'giant.png', attack: 10, defense: 14 },
+            { name: 'Archer', image: 'archer.png', attack: 4, defense: 3 }
+        ];
+
+        const playerCardsDiv = document.getElementById('playerCards');
+
+        playerCards.forEach(card => {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            cardDiv.innerHTML = `<img src="${card.image}" alt="${card.name}">
+                <div class="attack">Attack: ${card.attack}</div>
+                <div class="defense">Defense: ${card.defense}</div>`;
+            playerCardsDiv.appendChild(cardDiv);
+        });
+    </script>
+</body>
+</html>
