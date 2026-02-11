@@ -3,87 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clash Royale Game</title>
+    <title>Clash Royale Style Game</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
-        #lobby { display: none; }
-        #game { display: none; }
-        .hidden { display: none; }
-        .troop { width: 50px; height: 50px; position: absolute; }
+        body { font-family: Arial, sans-serif; }
+        .game-container { position: relative; width: 800px; height: 600px; margin: auto; }
+        .lane { position: absolute; width: 100%; height: 100%; }
+        .top-lane { top: 0; background-color: #f0f0f0; }
+        .bottom-lane { bottom: 0; background-color: #ffffff; }
+        .tower { width: 50px; height: 100px; background-color: #ff0000; position: absolute; }
+        .enemy-tower { left: 700px; }
+        .player-tower { left: 50px; }
+        .troop { width: 30px; height: 30px; background-color: #0000ff; position: absolute; }
+        .chest { width: 40px; height: 40px; background-color: gold; position: absolute; }
     </style>
     <script>
-        let playerTroops = [];
-        let enemyTroops = [];
-        let towerHealth = { player: 1000, enemy: 1000 };
-        let gameInterval;
-
-        function startLobby() {
-            document.getElementById('lobby').classList.remove('hidden');
-        }
-
-        function startGame() {
-            document.getElementById('lobby').style.display = 'none';
-            document.getElementById('game').style.display = 'block';
-            initiateGame();
-        }
-
-        function initiateGame() {
-            // Spawn troops
-            spawnTroops();
-            gameInterval = setInterval(updateGame, 1000);
-        }
-
-        function spawnTroops() {
-            const troop = document.createElement('div');
-            troop.className = 'troop';
-            troop.style.left = '0px';
-            troop.style.top = Math.floor(Math.random() * 500) + 'px';
-            document.getElementById('game').appendChild(troop);
-            playerTroops.push(troop);
-            // Randomly determine enemy troop
-            setTimeout(spawnEnemyTroop, 2000);
-        }
-
-        function spawnEnemyTroop() {
-            const troop = document.createElement('div');
-            troop.className = 'troop';
-            troop.style.left = '950px';
-            troop.style.top = Math.floor(Math.random() * 500) + 'px';
-            document.getElementById('game').appendChild(troop);
-            enemyTroops.push(troop);
-        }
-
-        function updateGame() {
-            playerTroops.forEach(troop => {
-                let pos = parseInt(troop.style.left);
-                troop.style.left = pos + 5 + 'px';
-                if (pos >= 900) { fight(troop); }
-            });
-            enemyTroops.forEach(troop => {
-                let pos = parseInt(troop.style.left);
-                troop.style.left = pos - 5 + 'px';
-                if (pos <= 50) { fight(troop); }
-            });
-        }
-
-        function fight(troop) {
-            // Simplified fight logic
-            const opponentTroop = troop.className === 'troop' ? enemyTroops.pop() : playerTroops.pop();
-            if (opponentTroop) {
-                alert('A fight occurred!');
-                opponentTroop.remove();
+        class Troop {
+            constructor(player){
+                this.element = document.createElement('div');
+                this.element.className = 'troop';
+                this.element.style.left = '50px';
+                this.element.style.bottom = player === 'player' ? '100px' : '500px';
+                document.querySelector('.game-container').appendChild(this.element);
+                this.move();
+            }
+            move() {
+                let interval = setInterval(() => {
+                    let currentLeft = parseInt(this.element.style.left);
+                    if (currentLeft < 700) {
+                        currentLeft += 5;
+                        this.element.style.left = currentLeft + 'px';
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 100);
             }
         }
+
+        function spawnTroop(player) {
+            new Troop(player);
+        }
+
+        window.onload = function() {
+            // Game Setup
+            let lobby = document.createElement('div');
+            lobby.innerHTML = '<h1>Lobby</h1><button onclick="spawnTroop(`player`)">Spawn Player Troop</button><button onclick="spawnTroop(`enemy`)">Spawn Enemy Troop</button>';
+            document.body.appendChild(lobby);
+
+            let gameContainer = document.createElement('div');
+            gameContainer.className = 'game-container';
+            gameContainer.innerHTML = '<div class="lane top-lane"></div><div class="lane bottom-lane"></div><div class="tower player-tower"></div><div class="tower enemy-tower"></div>';
+            document.body.appendChild(gameContainer);
+
+            // Gameplay Logic
+            // Further implementation needed for combat, tower health tracking, chest system.
+        };
     </script>
 </head>
 <body>
-    <div id="lobby">
-        <h1>Welcome to Clash Royale!</h1>
-        <button onclick="startGame()">Start Match</button>
-    </div>
-    <div id="game">
-        <h2>Game in Progress...</h2>
-    </div>
-    <script>startLobby();</script>
 </body>
 </html>
