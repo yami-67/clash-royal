@@ -3,49 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clash Royale Game</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .lobby { background-color: #f0f0f0; padding: 20px; text-align: center; }
-        .map { display: flex; flex-direction: row; height: 400px; }
-        .lane { flex: 1; border-right: 1px solid #ccc; position: relative; }
-        .lane:last-child { border-right: none; }
-        .troop { width: 50px; height: 50px; position: absolute; }
-        .elixir { position: fixed; top: 10px; right: 10px; background-color: #5aa; padding: 10px; color: white; }
-    </style>
+    <title>Clash Royal Lobby</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="lobby">
-        <h1>Welcome to Clash Royale!</h1>
-        <p>Ready to deploy your troops and fight for victory!</p>
+    <div id="lobby">
+        <h1>Welcome to the Clash Royal Lobby</h1>
+        <button id="createMatch">Create Match</button>
+        <button id="joinMatch">Join Match</button>
     </div>
-    <div class="elixir">Elixir: <span id="elixirCount">10</span></div>
-    <div class="map">
-        <div class="lane" id="lane1"></div>
-        <div class="lane" id="lane2"></div>
-        <div class="lane" id="lane3"></div>
+    <div id="chestSystem">
+        <h2>Chest System</h2>
+        <button id="openChest">Open Chest</button>
+        <div id="chestRewards"></div>
     </div>
-
-    <script>
-        let elixir = 10;
-        document.getElementById('elixirCount').innerText = elixir;
-
-        function deployTroop(lane) {
-            if (elixir >= 3) {
-                elixir -= 3;
-                document.getElementById('elixirCount').innerText = elixir;
-                const troop = document.createElement('div');
-                troop.className = 'troop';
-                troop.style.left = '10px';
-                troop.style.bottom = '10px';
-                document.getElementById(lane).appendChild(troop);
-            } else {
-                alert('Not enough elixir!');
-            }
-        }
-
-        // Example implementation of combat and tower mechanics here
-        // Include additional functions for troop locking, combat, and chest system
-    </script>
+    <div id="collectionTab">
+        <h2>Your Collection</h2>
+        <div id="collectedItems"></div>
+    </div>
+    <div id="playMatchSection">
+        <button id="playMatch">Play Match</button>
+    </div>
+    <script src="app.js"></script>
 </body>
 </html>
