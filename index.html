@@ -3,27 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clash Royal Lobby</title>
+    <title>Clash Royale</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="lobby">
-        <h1>Welcome to the Clash Royal Lobby</h1>
-        <button id="createMatch">Create Match</button>
-        <button id="joinMatch">Join Match</button>
-    </div>
-    <div id="chestSystem">
-        <h2>Chest System</h2>
-        <button id="openChest">Open Chest</button>
-        <div id="chestRewards"></div>
-    </div>
-    <div id="collectionTab">
-        <h2>Your Collection</h2>
-        <div id="collectedItems"></div>
-    </div>
-    <div id="playMatchSection">
-        <button id="playMatch">Play Match</button>
-    </div>
-    <script src="app.js"></script>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Chests</a></li>
+                <li><a href="#">Matches</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Welcome to Clash Royale</h1>
+        <section id="chest-system">
+            <h2>Chest System</h2>
+            <p>Open your chests to collect cards and upgrade your troops!</p>
+            <button onclick="openChest()">Open Chest</button>
+            <div id="chest-content"></div>
+        </section>
+        <section id="match-system">
+            <h2>Match System</h2>
+            <button onclick="startMatch()">Start Match</button>
+            <div id="match-content"></div>
+        </section>
+    </main>
+    <script>
+        function openChest() {
+            const content = "You opened a Gold Chest and received 50 Gold and 3 cards!";
+            document.getElementById('chest-content').innerText = content;
+        }
+
+        function startMatch() {
+            const content = "Match started! Battle against your opponent.");
+            document.getElementById('match-content').innerText = content;
+        }
+    </script>
 </body>
 </html>
